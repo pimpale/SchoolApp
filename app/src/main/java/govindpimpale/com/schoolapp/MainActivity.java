@@ -2,25 +2,48 @@ package govindpimpale.com.schoolapp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class MainActivity extends Activity {
 
+    WebView webView = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        WebView webView = (WebView) findViewById(R.id.webView);
+        webView = (WebView) findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                view.loadUrl(request.getUrl().toString());
+
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
                 return false;
             }
         });
+
         webView.loadUrl("file:///android_asset/website/index.html");
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_BACK:
+                    if (webView.canGoBack()) {
+                        webView.goBack();
+                    } else {
+                        finish();
+                    }
+                    return true;
+            }
+
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
 }
