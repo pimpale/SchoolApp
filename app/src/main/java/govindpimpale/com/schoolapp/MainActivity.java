@@ -1,6 +1,7 @@
 package govindpimpale.com.schoolapp;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.webkit.WebResourceRequest;
@@ -24,7 +25,6 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
-
         webView.loadUrl("file:///android_asset/website/index.html");
     }
 
@@ -45,5 +45,26 @@ public class MainActivity extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
+    void putSettings(String key, String value)
+    {
+        SharedPreferences settings = getSharedPreferences("SchoolApp", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
 
+    String getSettingsValue(String key)
+    {
+        return getSharedPreferences("SchoolApp", 0).getString("key", "").toString();
+    }
+
+    void setSchool(String str) {
+        putSettings("school", str);
+    }
+
+    String getSchool()
+    {
+        return getSettingsValue("school");
+    }
 }
+
